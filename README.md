@@ -1,83 +1,121 @@
-# Library Book Management Module - Take Home Assignment
+# **Library Management System (In-Memory Java Application)**
 
-## :warning: Please read these instructions carefully and entirely first
-* Clone this repository to your local machine (Alternatively, create a private GH fork).
-* Use your IDE of choice to complete the assignment.
-* There is no time limit for this task - however, for guidance, it is expected to typically take around 1-2 hours.
-* Once the assignment is complete, zip it & email it back to the interview panel.
-* Alternatively, if you can add the interviewer as a contributor to your private fork, that will suffice too.
+This project is a simple in-memory library management system built in Java that provides core functionality for managing books and loans. The system is designed to allow users to add, update, borrow, and return books, all stored in memory (no external database is required).
 
-## Overview
-Create a module that helps manage a library's book inventory and loan system. The system should handle basic operations related to books, members, and the borrowing process.
+---
 
-## Core Requirements
+## **Features**
 
-### 1. Book Management
-- Add new books to the library with the following details:
-  - ISBN (unique identifier)
-  - Title
-  - Author
-  - Publication Year
-  - Number of copies
-- Remove books from the inventory
-- Update book details
-- Search for books by ISBN, title, or author
+### **1. Book Management**
+- Add new books with details like ISBN, title, author, and total copies.
+- Search for books by ISBN, title, or author.
+- Update book details (title, author, total copies).
+- Remove books from the library inventory.
 
-### 2. Loan Management
-- Allow members to borrow books
-  - Track who has borrowed what
-  - Enforce maximum 3 books per member
-  - Set due date (14 days from borrowing)
-- Process book returns
-  - Calculate late fees if applicable (£1 per day late)
-  - Update book availability
-- View all books currently on loan
+### **2. Loan Management**
+- Borrow books (maximum of 3 books per member).
+- Enforce a 14-day loan period.
+- Calculate late fees (£1 per day after the due date).
+- Return books and update availability.
+- View all current loans.
 
-## Technical Requirements
+---
 
-### Data Storage
-- Use in-memory storage (no database required)
-- Organize data structures efficiently
-- Ensure thread-safety is considered
+## **Setup Instructions (Using Eclipse)**
 
-### API Design
-Design clean interfaces for the following operations:
-```java
-// Example interfaces (you can modify as needed):
-interface BookService {
-    void addBook(Book book);
-    Optional<Book> findByIsbn(String isbn);
-    List<Book> searchBooks(String searchTerm);
-    // ... other methods
-}
+### **Prerequisites**
+- **Java Development Kit (JDK)** version 8 or higher.
+- **Eclipse IDE** (or any compatible Java IDE).
+- **JUnit 5** (included in Eclipse, no additional setup needed).
 
-interface LoanService {
-    LoanResult borrowBook(String memberId, String isbn);
-    ReturnResult returnBook(String memberId, String isbn);
-    // ... other methods
-}
-```
+---
 
-## What We're Looking For
-- Clean, readable, and well-organized code
-- Clear separation of concerns
-- Edge cases consideration
-- Unit tests for core functionality
-- Clear README with setup instructions
-- Any assumptions made
+### **Project Setup in Eclipse**
 
-### Tips
-* We value simplicity as an architectural virtue and as a development practice. Solutions should reflect the difficulty of the assigned task, and shouldn’t be overly complex. We prefer simple, well tested solutions over clever solutions.
-* We value code that communicates well. Code that others can understand, modify, or use is far more valuable than code that is opaque.
-* Use the fact that this is a git repo to your advantage, attempt to make your commits meaningful and atomic.
-* Use frameworks, libraries, build tools that you are comfortable with as helpers, but the core functionality should be your own, you never know when your users might come up with new problems!
+1. **Clone or Download the Project**
+   - Clone the repository or download the source code as a zip file.
+   - Extract the zip file and open Eclipse.
 
-### DO
-* ✅ Include unit tests.
-* ✅ Test both any client and logic.
-* ✅ Update the README.md with any relevant information, assumptions, and/or tradeoffs you would like to highlight.
+2. **Import Project into Eclipse**
+   - In Eclipse, go to `File` → `Open Projects from File System`.
+   - Choose the directory where the project is located and click **Finish**.
 
-### DO NOT
-* ❌ Submit any form of app, such as web APIs, browser, desktop, or command-line applications.
-* ❌ Add unnecessary layers of abstraction.
-* ❌ Add unnecessary patterns/ architectural features that aren’t called for e.g. persistent storage.
+3. **Verify Project Structure**
+   - Ensure that `src/main/java` and `src/test/java` are recognized as source folders in Eclipse:
+     - Right-click the project → `Build Path` → `Configure Build Path`.
+     - Check that `src/main/java` and `src/test/java` are under **Source**.
+
+4. **Build the Project**
+   - Eclipse should automatically build the project. If not, enable **Build Automatically**:
+     - Go to `Project` → Ensure **Build Automatically** is checked.
+   - If needed, clean the project:
+     - Go to `Project` → `Clean` → Select the project and click **OK**.
+
+5. **Run the Application**
+   - In the `src/main/java/BookManagement` package, locate the `Main.java` file.
+   - Right-click on `Main.java` → `Run As` → `Java Application`.
+
+---
+
+### **Running Unit Tests (Using Eclipse)**
+
+1. Navigate to the `src/test/java/BookManagement` package in Eclipse.
+2. Right-click on the `LoanServiceTest` or `BookServiceTest` class.
+3. Select `Run As` → `JUnit Test`.
+4. View the test results in the **JUnit** tab.
+
+---
+
+## **Directory Structure**
+<img width="696" alt="image" src="https://github.com/user-attachments/assets/f0067ae6-612c-4edf-acec-7a3c38a5a4d7">
+
+
+---
+
+## **Assumptions Made**
+1. **In-Memory Storage**: All data is stored in memory, meaning the data will be lost when the application is restarted.
+2. **Fixed Late Fee**: A late fee of £1 per day is applied if the book is returned after the 14-day borrowing period.
+3. **Single-Threaded**: Thread-safety is considered using `ConcurrentHashMap`, assuming a single-user environment.
+4. **Unique ISBNs**: Each book has a unique ISBN, and books can be identified and manipulated using their ISBNs.
+5. **Simple Output**: The system's actions are shown in the console, validated primarily by unit tests.
+6. **Using Hashmap**: Using Hashmap here for better time complexity when storing data locally in application. When storing data in database, using List will represent data in better way. 
+
+---
+
+### **Adding or Borrowing Books**
+
+1. **Adding Books (via `BookServiceTest` or `Main.java`)**:
+   To add books to the system, you can use the following code:
+   ```java
+   bookService.addBook(new Book("111222", "Clean Code", "Robert C. Martin", 2008, 3, 3));
+   
+2. **Borrowing Books (via LoanServiceTest)**
+   To borrow a book using the `LoanService`, you can call the `borrowBook` method with the member ID and the ISBN of the book. Here is an example:
+   ```java
+   loanService.borrowBook("Member001", "111222");
+
+## **Technologies Used**
+
+- **Java 8+**: Core language used for the application, utilizing features such as **Streams API**, **LocalDate** for date handling, and **ConcurrentHashMap** for thread-safe data storage.
+- **JUnit 5**: Framework used for unit testing, ensuring that the core functionality of the services (e.g., BookService, LoanService) works as expected.
+- **ConcurrentHashMap**: Used to store data in a thread-safe way, allowing for concurrent access without issues.
+- **Streams API**: Utilized for efficient and functional-style data manipulation, especially for filtering and searching books or loans.
+
+---
+
+## **Unit Test Coverage**
+
+### **BookService Tests**:
+- **Add a new book**: Ensure that a new book can be successfully added to the inventory.
+- **Search for books by ISBN, title, or author**: Verify that the search functionality works for different attributes of the book (ISBN, title, author).
+- **Update book details**: Test updating book details such as title, author, and total copies, ensuring the changes are correctly reflected.
+- **Remove a book from inventory**: Test the functionality to remove a book from the inventory and verify that it's no longer available in the system.
+
+### **LoanService Tests**:
+- **Borrow a book successfully**: Test borrowing a book, ensuring that the available copies are decremented, and the loan is associated with the member.
+- **Borrow more than the allowed limit of 3 books**: Verify that the system prevents a member from borrowing more than 3 books at a time.
+- **Return a book and update availability**: Test returning a book, ensuring the available copies of the book are updated and the loan is removed.
+- **Calculate late fees for overdue returns**: Ensure that late fees are calculated based on the overdue days and are applied correctly when returning a late book.
+- **Attempt to borrow a book with no available copies**: Test the case where a member tries to borrow a book with no available copies, ensuring the system responds with an appropriate error message.
+
+---
